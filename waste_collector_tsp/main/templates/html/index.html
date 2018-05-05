@@ -1,10 +1,317 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load static %}
+{% load leaflet_tags %}
 <head>
+    {% leaflet_js  %}
+    {% leaflet_css %}
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>my title</title>
+
+
+    <script type="text/javascript" src="{% static 'javascript/leaflet.ajax.js' %}"> </script>
+
+    <script type="text/javascript" src="{% static 'group_layers/leaflet.groupedlayercontrol.js' %}"> </script>
+    <link rel="stylesheet" type="text/css" href="{% static 'group_layers/leaflet.groupedlayercontrol.css' %}">
+
+    <link rel="stylesheet" href="{% static 'search/css/leaflet-search.css' %}" />
+
+
+<script type="text/javascript" src="{% static 'search/js/leaflet-search.js' %}"> </script>
+
+<link href="{% static 'bootstrap/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Bootstrap Core CSS -->
+   <link href="{% static 'bootstrap/1-col-portfolio.css' %}" rel="stylesheet">
+
+
+
+<style>
+
+#gis {
+  float: left;
+  width: 80%;
+  height:600px;
+}
+
+
+#findbox {
+	background: #eee;
+	border-radius:.125em;
+	border:2px solid #1978cf;
+	box-shadow: 0 0 8px #999;
+	margin-bottom: 10px;
+	padding: 2px 0;
+	width: 600px;
+	height: 34px;
+}
+
+#findbox2 {
+	background: #eee;
+	border-radius:.125em;
+	border:2px solid #1978cf;
+	box-shadow: 0 0 8px #999;
+	margin-bottom: 10px;
+	padding: 2px 0;
+	width: 600px;
+	height: 34px;
+}
+.search-tooltip {
+	width: 200px;
+}
+.leaflet-control-search .search-cancel {
+	position: static;
+	float: left;
+	margin-left: -22px;
+}
+
+
+
+
+
+#wrapper {
+  margin: 0 auto;
+  width: 100%;
+}
+
+#panel{
+ float: left;
+  width: 100%;
+  height:50px;
+background-color: #175B81;
+color:white;
+}
+
+
+.sidebar {
+
+  float: left;
+  width: 15%;
+  height:600px;
+   background-color: white;
+   color: #175B81;
+}
+
+#footer {
+float: left;
+background-color: #175B81;
+color: white;
+  width: 100%;
+  height:25px
+}
+
+.text-labels     {
+	font-weight: bold;
+    color:#006400;
+	font-family: "Arial Black";
+	font-size: 20px ;
+    line-height:25px;
+    text-align:center;
+   }
+
+table, th, td
+	{
+		margin:0px 5px;
+		/*border:solid 1px #333; */
+		padding:2px 4px;
+		font:10px Verdana;
+	}
+th {
+		font-size:14px;
+		font-weight:bold
+	}
+td {
+		font-size:14px;
+		font-weight:normal
+	}
+tr {
+		background: white;
+	}
+
+tbody  tr:hover {
+		background: yellow;
+	}
+table {
+		border-collapse: collapse;
+	}
+.table a
+{
+    display:block;
+    text-decoration:none;
+}
+#f1{
+	font-weight:bold
+}
+.p2 {
+    font-size: 24px;
+    font-weight: bold;
+    position: relative;
+    top: 11px;
+    left: 20px;
+}
+
+
+</style>
 </head>
 <body>
-<p>hello world</p>
+
+<div>
+<h3>
+    Web GIS
+</h3>
+
+</div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+    <br>
+
+<b>Search values layer 1:</b><br />
+<div id="findbox"></div>
+<div id="map"></div>
+
+<br>
+    </div>
+<div class="form-group col-md-6">
+<br>
+
+    <b>Search values layer 2:</b><br />
+<div id="findbox2"></div>
+<div id="map"></div>
+
+
+    </div>
+
+
+  </div>
+
+
+<!-- gia perissotera basemaps -->
+<!--http://leaflet-extras.github.io/leaflet-providers/preview -->
+
+<script type="text/javascript">
+
+    var map = L.map('map').setView([40.65,22.92], 13);
+    function our_layers(map,options){
+        var osm=L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+            maxZoom:13,
+            attribution:'&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        });
+
+        var OpenTopoMap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+	        maxZoom: 17,
+	        attribution: 'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+        });
+
+
+
+
+
+
+
+
+
+
+        var points = new L.GeoJSON.AJAX("{% url 'node' %}",{
+        onEachFeature:function (feature,layer) {
+            layer.on('click', function (e) {
+            });
+            layer.bindPopup(feature.properties.name.toString())
+        }
+        });
+        points.addTo(map);
+
+
+
+
+        var baseLayers={
+            "OSM":osm,
+            "OpenTopoMap":OpenTopoMap
+
+        };
+
+        var groupedOverlays = {
+            "Layers": {
+            "Nodes": points
+        }
+
+
+};
+
+L.control.groupedLayers(baseLayers, groupedOverlays).addTo(map);
+
+
+
+	var searchControl = new L.Control.Search({
+        container: 'findbox',
+		layer: datasets,
+		propertyName: 'kalcode',
+		marker: false,
+		moveToLocation: function(latlng, title, map) {
+			//map.fitBounds( latlng.layer.getBounds() );
+			var zoom = map.getBoundsZoom(latlng.layer.getBounds());
+  			map.setView(latlng, zoom); // access the zoom
+		}
+	});
+
+	searchControl.on('search:locationfound', function(e) {
+
+		//console.log('search:locationfound', );
+
+		//map.removeLayer(this._markerSearch)
+
+		e.layer.setStyle({fillColor: '#3f0', color: '#0f0'});
+		if(e.layer._popup)
+			e.layer.openPopup();
+
+	}).on('search:collapsed', function(e) {
+
+		featuresLayer.eachLayer(function(layer) {	//restore feature color
+			featuresLayer.resetStyle(layer);
+		});
+	});
+
+
+L.control.search({
+        container: 'findbox2',
+		layer: points,
+		initial: false,
+        zoom: 18,
+		propertyName: 'name',
+		buildTip: function(text, val) {
+			var type = val.layer.feature.properties.name;
+			return '<a href="#" class="'+type+'">'+text +'<b>'+ type +'</b></a>';
+		}
+	})
+	.addTo(map);
+
+	map.addControl( searchControl );
+	map.addControl( new L.Control.Search({
+		url: 'http://nominatim.openstreetmap.org/search?format=json&q={s}',
+		jsonpParam: 'json_callback',
+		propertyName: 'display_name',
+		propertyLoc: ['lat','lon'],
+		marker: L.circleMarker([0,0],{radius:30}),
+		autoCollapse: true,
+		autoType: false,
+		minLength: 2
+	}) );
+    }
+
+</script>
+
+
+
+
+<div id="wrapper">
+
+
+
+<br>
+
+{% leaflet_map "gis" callback="window.our_layers" %}
+
+
+
+
+
 </body>
 </html>
