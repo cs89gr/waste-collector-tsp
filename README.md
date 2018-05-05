@@ -5,6 +5,12 @@ Serres Hackathon 3.0
 Find the shortest route when picking-up and transporting rubbish to the central waste management location.
 https://github.com/serrestech/hackathon/tree/gh-pages/pages/topic
 
+Find the shortest route when picking-up and transporting rubbish to the central waste management location.
+https://github.com/serrestech/hackathon/tree/gh-pages/pages/topic
+
+Find the shortest route when picking-up and transporting rubbish to the central waste management location.
+https://github.com/serrestech/hackathon/tree/gh-pages/pages/topic
+
 Requirements
 - Django / Python
 - PostgreSQL / PostGIS
