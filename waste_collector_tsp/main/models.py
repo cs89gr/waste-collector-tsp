@@ -18,5 +18,9 @@ class Edge(models.Model) :
     objects=models.GeoManager()
 
     @property
+    def geometry(self):
+        return "test"
+
+    @property
     def geom(self):
         return LineString(self.origin,self.destination)

@@ -93,7 +93,7 @@ DATABASES = {
 }
 
 try:
-    from conf import DATABASES
+    from conf import *
 except ImportError:
     pass
 
