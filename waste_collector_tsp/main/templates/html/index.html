@@ -225,8 +225,20 @@ table {
         });
         Edge.addTo(map);
 
+var myStyle = {
+    "color": "#ff7800",
+    "weight": 5,
+    "opacity": 0.65
+};
+        var route = new L.GeoJSON.AJAX("{% url 'route' %}",{
+        style:myStyle,
+        onEachFeature:function (feature,layer) {
+            layer.on('click', function (e) {
+            });
+        }
+        });
 
-
+        route.addTo(map);
 
         var baseLayers={
             "OSM":osm,
@@ -237,6 +249,7 @@ table {
         var groupedOverlays = {
             "Layers": {
             "Edges": Edge,
+                "Routes": route,
             "Nodes": points
         }
 

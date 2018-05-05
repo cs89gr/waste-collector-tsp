@@ -19,13 +19,14 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 from main import views
-from main.views import node_datasets, edge_datasets, HomePageView
+from main.views import node_datasets, edge_datasets, HomePageView,route_datasets
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.HomePageView, name='Home'),
     url(r'^node/$', node_datasets, name='node'),
     url(r'^edge/$', edge_datasets, name='edge'),
+    url(r'^route/$', route_datasets, name='route'),
 
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

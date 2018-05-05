@@ -25,7 +25,8 @@ class Edge(models.Model) :
         return "%s -> %s"%(self.origin.name,self.destination.name)
 
     def save(self,*args,**kwargs):
-        self.line = LineString(self.origin.location,self.destination.location)
+        if self.origin_id and self.destination_id:
+            self.line = LineString(self.origin.location,self.destination.location)
         super(Edge,self).save(*args,**kwargs)
 
 '''
