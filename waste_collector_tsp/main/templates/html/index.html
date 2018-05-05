@@ -208,8 +208,6 @@ table {
 
 
 
-
-
         var points = new L.GeoJSON.AJAX("{% url 'node' %}",{
         onEachFeature:function (feature,layer) {
             layer.on('click', function (e) {
@@ -218,6 +216,14 @@ table {
         }
         });
         points.addTo(map);
+
+        var Edge = new L.GeoJSON.AJAX("{% url 'edge' %}",{
+        onEachFeature:function (feature,layer) {
+            layer.on('click', function (e) {
+            });
+        }
+        });
+        Edge.addTo(map);
 
 
 
@@ -230,14 +236,15 @@ table {
 
         var groupedOverlays = {
             "Layers": {
+            "Edges": Edge,
             "Nodes": points
         }
+
 
 
 };
 
 L.control.groupedLayers(baseLayers, groupedOverlays).addTo(map);
-
 
 
 	var searchControl = new L.Control.Search({
@@ -283,6 +290,10 @@ L.control.search({
 	})
 	.addTo(map);
 
+
+
+
+
 	map.addControl( searchControl );
 	map.addControl( new L.Control.Search({
 		url: 'http://nominatim.openstreetmap.org/search?format=json&q={s}',
@@ -295,6 +306,7 @@ L.control.search({
 		minLength: 2
 	}) );
     }
+
 
 </script>
 
@@ -311,7 +323,17 @@ L.control.search({
 
 
 
+<div class="sidebar">
 
+<p style="text-align:left; font-size: 24px; color:#175B81; font-weight:bold;left: 255px;  ">Upload Files</p>
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input name="upload_file" type="file">
+        <input type="submit">
+    </form>
+
+
+    </div>
 
 </body>
 </html>

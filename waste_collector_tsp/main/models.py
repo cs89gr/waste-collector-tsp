@@ -18,12 +18,17 @@ class Node(models.Model) :
 class Edge(models.Model) :
     origin=models.ForeignKey(Node ,related_name='origin')
     destination = models.ForeignKey(Node, related_name='destination')
+    line=models.LineStringField(srid=4326,null=True,blank=True)
     objects=models.GeoManager()
 
     def __unicode__(self):
         return "%s -> %s"%(self.origin.name,self.destination.name)
 
+    def save(self,*args,**kwargs):
+        self.line = LineString(self.origin.location,self.destination.location)
+        super(Edge,self).save(*args,**kwargs)
 
+'''
     @property
     def geometry(self):
         return "test"
@@ -31,3 +36,4 @@ class Edge(models.Model) :
     @property
     def geom(self):
         return LineString(self.origin,self.destination)
+'''

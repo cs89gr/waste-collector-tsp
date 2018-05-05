@@ -18,6 +18,8 @@ def parse_node(txt):
 
 
 def parse_file(file_path):
+    nodes = []
+    edges = []
     with codecs.open(file_path, 'r', encoding='utf-8') as f:
         while True:
             line = f.readline()
@@ -57,8 +59,7 @@ def distance(node1, node2):
         return 0
 
 if __name__ == "__main__":
-    nodes = []
-    edges = []
+
 
     file_path = sys.argv[1] if len(sys.argv) > 1 else "..\\edges.txt"
     print "Parsing %s" % file_path
