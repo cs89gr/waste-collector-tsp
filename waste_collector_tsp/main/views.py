@@ -19,3 +19,8 @@ def node_datasets(request):
 def edge_datasets(request):
     edges=serialize('geojson',Edge.objects.all())
     return HttpResponse(edges,content_type='json')
+
+
+def upload_view(request):
+    print request.FILES
+    return render(request, "html/upload.html")

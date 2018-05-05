@@ -17,13 +17,14 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.conf.urls.static import static
 from django.conf import settings
-from main.views import node_datasets, edge_datasets, HomePageView
+from main.views import node_datasets, edge_datasets, HomePageView, upload_view
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', HomePageView.as_view(), name='home'),
     url(r'^node/$', node_datasets, name='node'),
     url(r'^edge/$', edge_datasets, name='edge'),
+    url(r'^upload/$', upload_view, name='upload'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -9,7 +9,7 @@ def parse_node(txt):
 
         name, lat, lon = txt[:i], txt[i + 1:j], txt[j + 1:]
         return {
-            "name": txt[:i],
+            "name": txt[:i].strip().replace('"', ""),
             "lat": float(lat.strip()),
             "lon": float(lon.strip())
         }
@@ -36,17 +36,31 @@ def parse_file(file_path):
                         nodes.append(origin)
                     if not any([node for node in nodes if node["name"] == destination["name"]]):
                         nodes.append(destination)
-                    edges.append((nodes.index(origin) + 1, nodes.index(destination) + 1))
+                    edges.append((nodes.index(origin) + 1, nodes.index(destination) + 1, distance(origin, destination)))
+                    #edges.append((origin["name"], destination["name"] + str(nodes.index(destination)), distance(origin, destination)))
             except:
                 pass
     return nodes, edges
 
 
+def distance(node1, node2):
+    try:
+        from osgeo import ogr
+        point1 = ogr.Geometry(ogr.wkbPoint)
+        point1.AddPoint(node1["lat"], node1["lon"])
+
+        point2 = ogr.Geometry(ogr.wkbPoint)
+        point2.AddPoint(node2["lat"], node2["lon"])
+        return point1.Distance(point2)
+    except Exception as e:
+        print e
+        return 0
+
 if __name__ == "__main__":
     nodes = []
     edges = []
 
-    file_path = sys.argv[1] if len(sys.argv) > 1 else "edges.txt"
+    file_path = sys.argv[1] if len(sys.argv) > 1 else "..\\edges.txt"
     print "Parsing %s" % file_path
     nodes, edges = parse_file(file_path)
     print "Nodes:"
