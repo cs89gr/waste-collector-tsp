@@ -138,3 +138,20 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS=(
+    os.path.join(BASE_DIR, 'static','static_dirs'),
+)
+STATIC_ROOT = os.path.join(BASE_DIR, 'static','static_root')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static','media')
+MEDIA_URL = ('/media/')
+
+
+LEAFLET_CONFIG={
+    "DEFAULT_CENTER":(41.0521,23.4965),
+    "DEFAULT_ZOOM": 12,
+    "MAX_ZOOM":20,
+    "MIN_ZOMM":5,
+    "SCALE":'both',
+    "ATTRIBUTION_PREFIX":'GeoTeam'
+
+}

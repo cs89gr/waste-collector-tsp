@@ -12,10 +12,17 @@ class Node(models.Model) :
     location = models.PointField(srid=4326)
     objects=models.GeoManager()
 
+    def __unicode__(self):
+        return self.name
+
 class Edge(models.Model) :
     origin=models.ForeignKey(Node ,related_name='origin')
     destination = models.ForeignKey(Node, related_name='destination')
     objects=models.GeoManager()
+
+    def __unicode__(self):
+        return "%s -> %s"%(self.origin.name,self.destination.name)
+
 
     @property
     def geometry(self):

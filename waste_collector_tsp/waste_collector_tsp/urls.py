@@ -22,6 +22,8 @@ from main.views import node_datasets, edge_datasets, HomePageView
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', HomePageView.as_view(), name='home'),
-    url(r'^node/$', node_datasets, name='Node'),
-    url(r'^edge/$', edge_datasets, name='Edge'),
+    url(r'^node/$', node_datasets, name='node'),
+    url(r'^edge/$', edge_datasets, name='edge'),
 ]
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
