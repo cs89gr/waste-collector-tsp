@@ -7,12 +7,21 @@ def parse_node(txt):
         i = txt.find(":")
         j = txt.find(",", i)
 
-        name, lat, lon = txt[:i], txt[i + 1:j], txt[j + 1:]
+        name, lat, lon = txt[:i], txt[i + 1:j].replace("<", ""), txt[j + 1:].replace(">", "")
         return {
             "name": txt[:i].strip().replace('"', ""),
             "lat": float(lat.strip()),
             "lon": float(lon.strip())
         }
+    except:
+        return None
+
+
+def parse_distance(txt):
+    try:
+        i = txt.find("Distance:")
+        txt = txt[i + len("Distance:"):]
+        return float(txt.replace("<", "").replace(">", ""))
     except:
         return None
 
@@ -32,13 +41,13 @@ def parse_file(file_path):
                 tokens = line.split(";")
                 origin = parse_node(tokens[0])
                 destination = parse_node(tokens[1])
-
+                edge_distance = parse_distance(tokens[2]) or distance(origin, destination)
                 if origin and destination:
                     if not any([node for node in nodes if node["name"] == origin["name"]]):
                         nodes.append(origin)
                     if not any([node for node in nodes if node["name"] == destination["name"]]):
                         nodes.append(destination)
-                    edges.append((nodes.index(origin) + 1, nodes.index(destination) + 1, distance(origin, destination)))
+                    edges.append((nodes.index(origin) + 1, nodes.index(destination) + 1, edge_distance))
                     #edges.append((origin["name"], destination["name"] + str(nodes.index(destination)), distance(origin, destination)))
             except:
                 pass
@@ -60,8 +69,6 @@ def distance(node1, node2):
         return 0
 
 if __name__ == "__main__":
-
-
     file_path = sys.argv[1] if len(sys.argv) > 1 else "..\\edges.txt"
     print "Parsing %s" % file_path
     nodes, edges = parse_file(file_path)

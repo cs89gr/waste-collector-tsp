@@ -12,6 +12,7 @@ from django.contrib.gis.geos import Point
 from utils import get_routes, get_edges_by_index, get_edges, get_node_names
 #import folium
 #import networkx
+import tempfile
 
 SOURCE = "Serres"
 DESTINATION = "Adelfiko"
@@ -21,11 +22,12 @@ def HomePageView(request):
     if request.method == "POST":
         file = request.FILES.get('upload_file')
         if file:
-            my_path='C:/Users/saran/Desktop/name.txt'
-            with open(my_path, 'wb+') as destination:
+            temp_file = tempfile.NamedTemporaryFile(delete=False)
+            #my_path='C:/Users/saran/Desktop/name.txt'
+            with open(temp_file.name, 'wb+') as destination:
                 for chunk in file.chunks():
                     destination.write(chunk)
-            nodes,edges=parse_file(my_path)
+            nodes, edges = parse_file(temp_file.name)
             try:
                 Edge.objects.all().delete()
             except:

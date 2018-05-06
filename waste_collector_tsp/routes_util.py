@@ -1,5 +1,7 @@
-EDGES = [(1, 2, 0.15220937200120155), (1, 3, 0.07486017516677523), (1, 4, 0.08990458481078452), (2, 5, 0.034887468065194625), (4, 5, 0.03341493930864161), (4, 6, 0.04610685976077672), (4, 7, 0.048049166454794505), (3, 6, 0.0374101278399305), (3, 8, 0.03212117539879135), (3, 9, 0.04187703659525126), (5, 7, 0.04318737639635535), (6, 7, 0.04880096083070478), (7, 10, 0.022768393114137565), (8, 10, 0.06504129984094921), (8, 9, 0.04514461740894433)]
-NODES = [{'lat': 41.092083, 'lon': 23.541016, 'name': u'Serres'}, {'lat': 41.068238, 'lon': 23.390686, 'name': u'Provatas'}, {'lat': 41.020032, 'lon': 23.520701, 'name': u'Skoutari'}, {'lat': 41.05868, 'lon': 23.457547, 'name': u'K. Mitrousi'}, {'lat': 41.05832, 'lon': 23.424134, 'name': u'A. Kamila'}, {'lat': 41.020431, 'lon': 23.483293, 'name': u'K. Kamila'}, {'lat': 41.016434, 'lon': 23.434656, 'name': u'Koumaria'}, {'lat': 40.988154, 'lon': 23.516756, 'name': u'Peponia'}, {'lat': 41.003545, 'lon': 23.559196, 'name': u'Ag. Eleni'}, {'lat': 41.014645, 'lon': 23.457354, 'name': u'Adelfiko'}]
+import sys
+
+#EDGES = [(1, 2, 0.15220937200120155), (1, 3, 0.07486017516677523), (1, 4, 0.08990458481078452), (2, 5, 0.034887468065194625), (4, 5, 0.03341493930864161), (4, 6, 0.04610685976077672), (4, 7, 0.048049166454794505), (3, 6, 0.0374101278399305), (3, 8, 0.03212117539879135), (3, 9, 0.04187703659525126), (5, 7, 0.04318737639635535), (6, 7, 0.04880096083070478), (7, 10, 0.022768393114137565), (8, 10, 0.06504129984094921), (8, 9, 0.04514461740894433)]
+#NODES = [{'lat': 41.092083, 'lon': 23.541016, 'name': u'Serres'}, {'lat': 41.068238, 'lon': 23.390686, 'name': u'Provatas'}, {'lat': 41.020032, 'lon': 23.520701, 'name': u'Skoutari'}, {'lat': 41.05868, 'lon': 23.457547, 'name': u'K. Mitrousi'}, {'lat': 41.05832, 'lon': 23.424134, 'name': u'A. Kamila'}, {'lat': 41.020431, 'lon': 23.483293, 'name': u'K. Kamila'}, {'lat': 41.016434, 'lon': 23.434656, 'name': u'Koumaria'}, {'lat': 40.988154, 'lon': 23.516756, 'name': u'Peponia'}, {'lat': 41.003545, 'lon': 23.559196, 'name': u'Ag. Eleni'}, {'lat': 41.014645, 'lon': 23.457354, 'name': u'Adelfiko'}]
 
 def next_step(edges, node, routes):
     print "Node", node
@@ -74,15 +76,17 @@ def calc(edges, nodes):
     SPONTANEOUS_NODES_NAMES = ["A. Kamila", "K. Mitrousi"]
     SPONTANEOUS_NODES = [node_index(nodes, name) for name in SPONTANEOUS_NODES_NAMES]
 
-    print start_node, end_node
+    print "start = %s, end = %s" % (start_node, end_node)
     routes = get_routes(edges, start_node, end_node)
     print "Routes"
     min_cost = None
     min_route = None
     for route in routes:
+        print route
+
         if len(route) < len(nodes):
             print "not all nodes visited"
-            #continue
+            continue
 
         if len([node for node in route if node == end_node]) > 1:
             print "end node visited more than once"
@@ -96,7 +100,6 @@ def calc(edges, nodes):
             print "route contains: %s (after 2nd node)" % ", ".join(SPONTANEOUS_NODES_NAMES)
             #continue
 
-        print route
         route += [None]
         cost = 0
         i = 0
@@ -106,7 +109,7 @@ def calc(edges, nodes):
             if dest:
                 distance = [distance for origin, destination, distance in edges if (source, dest) == (origin, destination) or (source, dest) == (destination, origin)][0]
                 cost += distance
-        print cost
+        print "cost = %s" % cost
         print
         if min_cost is None or cost < min_cost:
             min_cost = cost
@@ -118,4 +121,18 @@ def calc(edges, nodes):
 
 
 if __name__ == "__main__":
-    calc(EDGES, NODES)
+    from parse_edges import parse_file
+
+    file_path = sys.argv[1] if len(sys.argv) > 1 else "..\\edges.txt"
+    print "Parsing %s" % file_path
+    nodes, edges = parse_file(file_path)
+    print "Nodes:"
+    i = 0
+    for node in nodes:
+        i += 1
+        print "%2d. %s" % (i, node["name"])
+    print "Edges:"
+    for edge in edges:
+        print edge
+
+    calc(edges, nodes)
