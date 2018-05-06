@@ -58,10 +58,7 @@ def route_contains_nodes(route, nodes, node_index=None):
     return True
 
 
-if __name__ == "__main__":
-    edges = EDGES
-    nodes = NODES
-
+def calc(edges, nodes):
     start_node = 1
     end_node = 9
 
@@ -84,7 +81,7 @@ if __name__ == "__main__":
     min_route = None
     for route in routes:
         if len(route) < len(nodes):
-            #print "not all nodes visited"
+            print "not all nodes visited"
             #continue
 
         if len([node for node in route if node == end_node]) > 1:
@@ -118,3 +115,7 @@ if __name__ == "__main__":
     print "Min cost route"
     print min_route
     print min_cost
+
+
+if __name__ == "__main__":
+    calc(EDGES, NODES)

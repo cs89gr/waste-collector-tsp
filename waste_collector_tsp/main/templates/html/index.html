@@ -3,185 +3,191 @@
 {% load static %}
 {% load leaflet_tags %}
 <head>
-    {% leaflet_js  %}
+    {% leaflet_js %}
     {% leaflet_css %}
     <meta charset="UTF-8">
-    <title>my title</title>
+    <title>Waste Collector Route Utility</title>
 
 
-    <script type="text/javascript" src="{% static 'javascript/leaflet.ajax.js' %}"> </script>
+    <script type="text/javascript" src="{% static 'javascript/leaflet.ajax.js' %}"></script>
 
-    <script type="text/javascript" src="{% static 'group_layers/leaflet.groupedlayercontrol.js' %}"> </script>
+    <script type="text/javascript" src="{% static 'group_layers/leaflet.groupedlayercontrol.js' %}"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'group_layers/leaflet.groupedlayercontrol.css' %}">
 
-    <link rel="stylesheet" href="{% static 'search/css/leaflet-search.css' %}" />
+    <link rel="stylesheet" href="{% static 'search/css/leaflet-search.css' %}"/>
 
 
-<script type="text/javascript" src="{% static 'search/js/leaflet-search.js' %}"> </script>
+    <script type="text/javascript" src="{% static 'search/js/leaflet-search.js' %}"></script>
 
-<link href="{% static 'bootstrap/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'bootstrap/bootstrap.min.css' %}" rel="stylesheet">
     <!-- Bootstrap Core CSS -->
-   <link href="{% static 'bootstrap/1-col-portfolio.css' %}" rel="stylesheet">
+    <link href="{% static 'bootstrap/1-col-portfolio.css' %}" rel="stylesheet">
+
+
+    <style>
+        body {
+            padding-top: 0;
+            background: #abc;
+            background: linear-gradient(to right, #abc, #aa0);
+        }
+        #gis {
+          float: left;
+          width: 60%;
+          height:600px;
+        }
+
+
+        #findbox {
+            background: #eee;
+            border-radius:.125em;
+            border:2px solid #1978cf;
+            box-shadow: 0 0 8px #999;
+            margin-bottom: 10px;
+            padding: 2px 0;
+            width: 600px;
+            height: 34px;
+        }
+
+        #findbox2 {
+            background: #eee;
+            border-radius:.125em;
+            border:2px solid #1978cf;
+            box-shadow: 0 0 8px #999;
+            margin-bottom: 10px;
+            padding: 2px 0;
+            width: 600px;
+            height: 34px;
+        }
+        .search-tooltip {
+            width: 200px;
+        }
+        .leaflet-control-search .search-cancel {
+            position: static;
+            float: left;
+            margin-left: -22px;
+        }
 
 
 
-<style>
-
-#gis {
-  float: left;
-  width: 80%;
-  height:600px;
-}
 
 
-#findbox {
-	background: #eee;
-	border-radius:.125em;
-	border:2px solid #1978cf;
-	box-shadow: 0 0 8px #999;
-	margin-bottom: 10px;
-	padding: 2px 0;
-	width: 600px;
-	height: 34px;
-}
+        #wrapper {
+          margin: 0 auto;
+          width: 100%;
+        }
 
-#findbox2 {
-	background: #eee;
-	border-radius:.125em;
-	border:2px solid #1978cf;
-	box-shadow: 0 0 8px #999;
-	margin-bottom: 10px;
-	padding: 2px 0;
-	width: 600px;
-	height: 34px;
-}
-.search-tooltip {
-	width: 200px;
-}
-.leaflet-control-search .search-cancel {
-	position: static;
-	float: left;
-	margin-left: -22px;
-}
+        #panel{
+         float: left;
+          width: 100%;
+          height:50px;
+        background-color: #175B81;
+        color:white;
+        }
 
 
+        .sidebar {
 
+          float: left;
+          width: 40%;
+          height:600px;
+           background-color: white;
+           color: #175B81;
+        }
 
+        #footer {
+        float: left;
+        background-color: #175B81;
+        color: white;
+          width: 100%;
+          height:25px
+        }
 
-#wrapper {
-  margin: 0 auto;
-  width: 100%;
-}
+        .text-labels     {
+            font-weight: bold;
+            color:#006400;
+            font-family: "Arial Black";
+            font-size: 20px ;
+            line-height:25px;
+            text-align:center;
+           }
 
-#panel{
- float: left;
-  width: 100%;
-  height:50px;
-background-color: #175B81;
-color:white;
-}
+        table, th, td
+            {
+                margin:0px 5px;
+                /*border:solid 1px #333; */
+                padding:2px 4px;
+                font:10px Verdana;
+            }
+        th {
+                font-size:14px;
+                font-weight:bold
+            }
+        td {
+                font-size:14px;
+                font-weight:normal
+            }
+        tr {
+                background: white;
+            }
 
+        tbody  tr:hover {
+                background: yellow;
+            }
+        table {
+                border-collapse: collapse;
+            }
+        .table a
+        {
+            display:block;
+            text-decoration:none;
+        }
+        #f1{
+            font-weight:bold
+        }
+        .p2 {
+            font-size: 24px;
+            font-weight: bold;
+            position: relative;
+            top: 11px;
+            left: 20px;
+        }
 
-.sidebar {
+        .selected {
+            border: solid 2px;
+        }
 
-  float: left;
-  width: 15%;
-  height:600px;
-   background-color: white;
-   color: #175B81;
-}
-
-#footer {
-float: left;
-background-color: #175B81;
-color: white;
-  width: 100%;
-  height:25px
-}
-
-.text-labels     {
-	font-weight: bold;
-    color:#006400;
-	font-family: "Arial Black";
-	font-size: 20px ;
-    line-height:25px;
-    text-align:center;
-   }
-
-table, th, td
-	{
-		margin:0px 5px;
-		/*border:solid 1px #333; */
-		padding:2px 4px;
-		font:10px Verdana;
-	}
-th {
-		font-size:14px;
-		font-weight:bold
-	}
-td {
-		font-size:14px;
-		font-weight:normal
-	}
-tr {
-		background: white;
-	}
-
-tbody  tr:hover {
-		background: yellow;
-	}
-table {
-		border-collapse: collapse;
-	}
-.table a
-{
-    display:block;
-    text-decoration:none;
-}
-#f1{
-	font-weight:bold
-}
-.p2 {
-    font-size: 24px;
-    font-weight: bold;
-    position: relative;
-    top: 11px;
-    left: 20px;
-}
-
-
-</style>
+    </style>
 </head>
 <body>
 
 <div>
-<h3>
-    Web GIS
-</h3>
+    <h3>
+        Waste Collector Route Web GIS
+    </h3>
 
 </div>
-  <div class="form-row">
+<div class="form-row">
     <div class="form-group col-md-6">
-    <br>
+        <br>
 
-<b>Search values layer 1:</b><br />
-<div id="findbox"></div>
-<div id="map"></div>
+        <b>Search values layer 1:</b><br/>
+        <div id="findbox"></div>
+        <div id="map"></div>
 
-<br>
+        <br>
     </div>
-<div class="form-group col-md-6">
-<br>
+    <div class="form-group col-md-6">
+        <br>
 
-    <b>Search values layer 2:</b><br />
-<div id="findbox2"></div>
-<div id="map"></div>
+        <b>Search values layer 2:</b><br/>
+        <div id="findbox2"></div>
+        <div id="map"></div>
 
 
     </div>
 
 
-  </div>
+</div>
 
 
 <!-- gia perissotera basemaps -->
@@ -201,13 +207,6 @@ table {
 	        attribution: 'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
         });
 
-
-
-
-
-
-
-
         var points = new L.GeoJSON.AJAX("{% url 'node' %}",{
         onEachFeature:function (feature,layer) {
             layer.on('click', function (e) {
@@ -218,24 +217,24 @@ table {
         points.addTo(map);
 
         var Edge = new L.GeoJSON.AJAX("{% url 'edge' %}",{
-        onEachFeature:function (feature,layer) {
-            layer.on('click', function (e) {
-            });
-        }
+            onEachFeature:function (feature,layer) {
+                layer.on('click', function (e) {
+                });
+            }
         });
         Edge.addTo(map);
 
-var myStyle = {
-    "color": "#ff7800",
-    "weight": 5,
-    "opacity": 0.65
-};
-        var route = new L.GeoJSON.AJAX("{% url 'route' %}",{
-        style:myStyle,
-        onEachFeature:function (feature,layer) {
-            layer.on('click', function (e) {
-            });
-        }
+        var highlightStyle = {
+            "color": "#ff7800",
+            "weight": 10,
+            "opacity": 0.85
+        };
+        var route = new L.GeoJSON.AJAX("{% url 'route' %}?route_index={{ request.GET.route_index }}",{
+            style:highlightStyle,
+            onEachFeature:function (feature,layer) {
+                layer.on('click', function (e) {
+                });
+            }
         });
 
         route.addTo(map);
@@ -255,9 +254,9 @@ var myStyle = {
 
 
 
-};
+    };
 
-L.control.groupedLayers(baseLayers, groupedOverlays).addTo(map);
+    L.control.groupedLayers(baseLayers, groupedOverlays).addTo(map);
 
 
 	var searchControl = new L.Control.Search({
@@ -290,7 +289,7 @@ L.control.groupedLayers(baseLayers, groupedOverlays).addTo(map);
 	});
 
 
-L.control.search({
+    L.control.search({
         container: 'findbox2',
 		layer: points,
 		initial: false,
@@ -302,10 +301,6 @@ L.control.search({
 		}
 	})
 	.addTo(map);
-
-
-
-
 
 	map.addControl( searchControl );
 	map.addControl( new L.Control.Search({
@@ -320,33 +315,175 @@ L.control.search({
 	}) );
     }
 
-
 </script>
-
-
 
 
 <div id="wrapper">
 
 
+    <br>
 
-<br>
-
-{% leaflet_map "gis" callback="window.our_layers" %}
-
+    {% leaflet_map "gis" callback="window.our_layers" %}
 
 
-<div class="sidebar">
+    <div class="sidebar">
 
-<p style="text-align:left; font-size: 24px; color:#175B81; font-weight:bold;left: 255px;  ">Upload Files</p>
-    <form action="" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <input name="upload_file" type="file">
-        <input type="submit">
-    </form>
+        <p style="text-align:left; font-size: 24px; color:#175B81; font-weight:bold;left: 255px;  ">Upload Files</p>
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input name="upload_file" type="file">
+            <input type="submit">
+        </form>
 
+        <p>&nbsp;</p>
+
+        <div style="overflow: auto; height: 450px">
+
+            {% for route in routes %}
+                <p class="{% if route_index == forloop.counter %}selected{% endif %}">
+                    <strong><a href="?route_index={{ forloop.counter }}">Διαδρομή Νο{{ forloop.counter }}</a>   </strong> <br />
+
+                    {% for node in route %}
+                        {{ node }} {% if not forloop.last %} &rarr; {% endif %}
+                    {% endfor %}
+                </p>
+            {% endfor %}
+        </div>
 
     </div>
 
+    <pre>
+         1. Serres
+         2. Provatas
+         3. Skoutari
+         4. K. Mitrousi
+         5. A. Kamila
+         6. K. Kamila
+         7. Koumaria
+         8. Peponia
+         9. Ag. Eleni
+        10. Adelfiko
+
+        From 1 to 10
+
+        BEST
+        route contains: Koumaria, Skoutari, Peponia, Provatas
+        route contains: A. Kamila, K. Mitrousi (after 2nd node)
+        [1, 2, 5, 4, 7, 6, 3, 9, 8, 10]
+        0.506834988346
+
+        ALTERNATIVE
+        route contains: Koumaria, Skoutari, Peponia, Provatas
+        route contains: A. Kamila, K. Mitrousi (after 2nd node)
+        [1, 2, 5, 7, 4, 6, 3, 9, 8, 10]
+        0.513913324363
+
+        not all nodes visited
+        route contains: A. Kamila, K. Mitrousi (after 2nd node)
+        [1, 2, 5, 4, 6, 3, 8, 10]
+        0.401191242215
+
+        not all nodes visited
+        route contains: A. Kamila, K. Mitrousi (after 2nd node)
+        [1, 2, 5, 4, 6, 3, 9, 8, 10]
+        0.456091720821
+
+        not all nodes visited
+        route contains: A. Kamila, K. Mitrousi (after 2nd node)
+        [1, 2, 5, 4, 6, 7, 10]
+        0.338187993081
+
+        not all nodes visited
+        route contains: Koumaria, Skoutari, Peponia, Provatas
+        route contains: A. Kamila, K. Mitrousi (after 2nd node)
+        [1, 2, 5, 4, 7, 6, 3, 8, 10]
+        0.45193450974
+
+        not all nodes visited
+        route contains: A. Kamila, K. Mitrousi (after 2nd node)
+        [1, 2, 5, 4, 7, 10]
+        0.291329338944
+
+        not all nodes visited
+        route contains: Koumaria, Skoutari, Peponia, Provatas
+        route contains: A. Kamila, K. Mitrousi (after 2nd node)
+        [1, 2, 5, 7, 4, 6, 3, 8, 10]
+        0.459012845758
+
+        not all nodes visited
+        route contains: Koumaria, Skoutari, Peponia, Provatas
+        [1, 2, 5, 7, 6, 3, 8, 10]
+        0.413657780373
+
+        not all nodes visited
+        route contains: Koumaria, Skoutari, Peponia, Provatas
+        [1, 2, 5, 7, 6, 3, 9, 8, 10]
+        0.468558258979
+
+        not all nodes visited
+        [1, 2, 5, 7, 10]
+        0.253052609577
+
+        not all nodes visited
+        route contains: A. Kamila, K. Mitrousi (after 2nd node)
+        [1, 3, 6, 4, 5, 7, 10]
+        0.257747871587
+
+        not all nodes visited
+        [1, 3, 6, 4, 7, 10]
+        0.229194722336
+
+        not all nodes visited
+        [1, 3, 6, 7, 10]
+        0.183839656952
+
+        not all nodes visited
+        [1, 3, 8, 10]
+        0.172022650407
+
+        not all nodes visited
+        [1, 3, 9, 8, 10]
+        0.226923129012
+
+        not all nodes visited
+        route contains: A. Kamila, K. Mitrousi (after 2nd node)
+        [1, 4, 5, 7, 6, 3, 8, 10]
+        0.349880464426
+
+        not all nodes visited
+        route contains: A. Kamila, K. Mitrousi (after 2nd node)
+        [1, 4, 5, 7, 6, 3, 9, 8, 10]
+        0.404780943032
+
+        not all nodes visited
+        route contains: A. Kamila, K. Mitrousi (after 2nd node)
+        [1, 4, 5, 7, 10]
+        0.18927529363
+
+        not all nodes visited
+        [1, 4, 6, 3, 8, 10]
+        0.270584047651
+
+        not all nodes visited
+        [1, 4, 6, 3, 9, 8, 10]
+        0.325484526257
+
+        not all nodes visited
+        [1, 4, 6, 7, 10]
+        0.207580798516
+
+        not all nodes visited
+        [1, 4, 7, 6, 3, 8, 10]
+        0.321327315176
+
+        not all nodes visited
+        [1, 4, 7, 6, 3, 9, 8, 10]
+        0.376227793781
+
+        not all nodes visited
+        [1, 4, 7, 10]
+        0.16072214438
+    </pre>
+</div>
 </body>
 </html>

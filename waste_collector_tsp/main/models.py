@@ -21,6 +21,17 @@ class Edge(models.Model) :
     line=models.LineStringField(srid=4326,null=True,blank=True)
     objects=models.GeoManager()
 
+    def distance(self):
+        if self.origin_id and self.destination_id:
+            from parse_edges import distance
+            return distance({
+                "lat": self.origin.location.x,
+                "lon": self.origin.location.y
+            }, {
+                "lat": self.destination.location.x,
+                "lon": self.destination.location.y
+            })
+
     def __unicode__(self):
         return "%s -> %s"%(self.origin.name,self.destination.name)
 

@@ -46,6 +46,7 @@ def parse_file(file_path):
 
 
 def distance(node1, node2):
+    #print node1, node2
     try:
         from osgeo import ogr
         point1 = ogr.Geometry(ogr.wkbPoint)
