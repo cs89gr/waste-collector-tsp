@@ -15,11 +15,8 @@ Requirements
 - Django / Python
 - PostgreSQL / PostGIS
 
-# Install
-
-# Usage
-
-# Live demo
+# Screenshot
+![image](https://raw.githubusercontent.com/cs89gr/waste-collector-tsp/master/Screenshot2.jpg)
 
 # License
 [GNU General Public License v3.0](LICENSE)
